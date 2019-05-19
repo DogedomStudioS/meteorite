@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/alert.png-80392ec0aac56a3b31422e7a2ae11c53.stex"
+path="res://.import/screenshot3.png-aeb62f3a61ef5999c0a7e6abeed3eda7.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://textures/ui/alert.png"
-dest_files=[ "res://.import/alert.png-80392ec0aac56a3b31422e7a2ae11c53.stex" ]
+source_file="res://promo/crop/screenshot3.png"
+dest_files=[ "res://.import/screenshot3.png-aeb62f3a61ef5999c0a7e6abeed3eda7.stex" ]
 
 [params]
 

@@ -1,55 +1,49 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/doors/door_medium.dae" type="PackedScene" id=1]
 [ext_resource path="res://scripts/doors/door_generic.gd" type="Script" id=2]
-[ext_resource path="res://scripts/doors/door_half.gd" type="Script" id=3]
+[ext_resource path="res://textures/doors/door_medium_red.png" type="Texture" id=3]
+[ext_resource path="res://scripts/doors/door_half.gd" type="Script" id=4]
 
-[node name="door_medium" index="0" instance=ExtResource( 1 )]
+[sub_resource type="SpatialMaterial" id=1]
+resource_local_to_scene = true
+resource_name = "door_medium"
+albedo_color = Color( 0.64, 0.64, 0.64, 1 )
+albedo_texture = ExtResource( 3 )
+metallic = 0.5
+roughness = 0.542695
 
+[node name="door_medium" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 door_list = "doorL,doorR"
 door_texture_prefix = "textures/doors/door_medium"
-duration = 1.4
-bullet_color = 0
 
 [node name="doorL" parent="." index="0"]
-
-_sections_unfolded = [ "material" ]
+use_in_baked_light = true
+material/0 = SubResource( 1 )
 
 [node name="col" parent="doorL" index="0" groups=[
 "door_half",
 ]]
-
 collision_layer = 3
-script = ExtResource( 3 )
-_sections_unfolded = [ "Collision" ]
+script = ExtResource( 4 )
 parent_door = NodePath("../..")
 move_to_pos = Vector3( -1.1, 0, 0 )
+
+[node name="doorR" parent="." index="1"]
+use_in_baked_light = true
+material/0 = SubResource( 1 )
 
 [node name="col" parent="doorR" index="0" groups=[
 "door_half",
 ]]
-
 collision_layer = 3
-script = ExtResource( 3 )
-_sections_unfolded = [ "Collision" ]
+script = ExtResource( 4 )
 parent_door = NodePath("../..")
 move_to_pos = Vector3( 1.1, 0, 0 )
 
 [node name="timer" type="Timer" parent="." index="3"]
-
-process_mode = 1
 wait_time = 7.0
-one_shot = false
-autostart = false
 
 [node name="tween" type="Tween" parent="." index="4"]
-
-repeat = false
 playback_process_mode = 0
-playback_speed = 1.0
-playback/active = false
-playback/repeat = false
-playback/speed = 1.0
-
-
