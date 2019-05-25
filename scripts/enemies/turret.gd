@@ -27,7 +27,6 @@ func destroy():
 
 func _ready():
 	ai_state.switch_state_immediately("asleep")
-	
 	$ai_timer.wait_time += rand_range(-1,1)*0.01
 	
 func aim_at(pos):

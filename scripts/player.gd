@@ -5,6 +5,7 @@ var BulletColor = Enums.BulletColor
 # these need to be stored
 const max_goal_speed = 5
 const max_health = 100
+const max_still_slope_angle = 50.0
 var health = max_health
 var upgrades = [] # list of strings
 
@@ -90,7 +91,7 @@ func process_shoot(event):
 
 func _physics_process(delta):
 	body_state.fixed_update(delta)
-	velocity = move_and_slide(velocity, Vector3(0,1,0))
+	velocity = move_and_slide(velocity, Vector3(0,1,0), true)
 	
 	if body_state.state.has_method("process_boost"):
 		body_state.state.process_boost(delta)

@@ -5,7 +5,7 @@ onready var game_state = $game_state
 var current_level = null
 
 func _ready():
-	game_state.switch_state_immediately("intro")
+	game_state.switch_state_immediately("main_menu")
 	
 func _process(delta):
 	game_state.update(delta)

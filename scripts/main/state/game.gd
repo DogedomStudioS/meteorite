@@ -9,7 +9,7 @@ func on_init():
 	for c in get_children():
 		c.queue_free()
 		
-	current_level = preload("res://scenes/levels/level2.tscn").instance()
+	current_level = preload("res://scenes/levels/procedural_test_level.tscn").instance()
 	add_child(current_level)
 	fsm_owner.current_level = current_level
 	

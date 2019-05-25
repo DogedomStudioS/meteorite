@@ -1,7 +1,6 @@
 extends "res://scripts/fsm/fsm_state.gd"
 
 func on_init():
-	
 	var pos = Vector2(32,32)
 	
 	if fsm_owner.get_node("menu_item_texts").get_child_count() > 0:
