@@ -3,7 +3,7 @@ extends KinematicBody
 var BulletColor = Enums.BulletColor
 
 # these need to be stored
-const max_goal_speed = 5
+const max_goal_speed = 33.4
 const max_health = 100
 const max_still_slope_angle = 50.0
 var health = max_health
@@ -24,6 +24,7 @@ var jump_counter = 1
 var in_warning_state = false
 var boss_defeated = false
 var can_play_hit_sound = true
+var unlocked: bool = false
 
 func _ready():
 	tween.interpolate_property(cam, "fov", 0.1, cam.fov, 1.0,Tween.TRANS_BACK, Tween.EASE_OUT)
@@ -33,7 +34,8 @@ func _ready():
 	
 	yield(get_tree(), "idle_frame")
 	yield(get_tree(), "idle_frame")
-	$ui/loading.hide()	
+	if unlocked:
+		$ui/loading.hide()
 	
 func _process(delta):
 	
@@ -42,7 +44,21 @@ func _process(delta):
 	gun_container.global_transform.basis = Basis(gun_rot)
 	
 	body_state.update(delta)
-	
+
+func unlock_movement():
+	find_ground()
+	$ui/loading.hide()
+	unlocked = true
+
+func find_ground():
+	print("finding ground...")
+	if $floor_ray.is_colliding():
+		print("ray colliding.")
+		var groundPoint = $floor_ray.get_collision_point()
+		var position = get_global_transform().origin
+		print(position.y - groundPoint.y)
+		global_translate(Vector3(position.x, -(position.y - groundPoint.y) + 1.2, position.z))
+		move_and_collide(Vector3(0, -2, 0))
 	
 func _unhandled_input(event): # it's very important to use UNHANDLED INPUT so things on top can steal mouse input
 	body_state.handle_input(event)
@@ -90,7 +106,14 @@ func process_shoot(event):
 			 KEY_3: if is_unlocked(Enums.UPGRADE_GUN_RED): gun.switch_to_color(BulletColor.RED)
 
 func _physics_process(delta):
+	if	!unlocked:
+		return
 	body_state.fixed_update(delta)
+
+	if get_slide_count() > 0:
+		var collision = get_slide_collision(0)
+		var normal = collision.normal
+		velocity = Vector3(velocity.x, velocity.y - normal.y, velocity.z)
 	velocity = move_and_slide(velocity, Vector3(0,1,0), true)
 	
 	if body_state.state.has_method("process_boost"):
@@ -288,5 +311,6 @@ func get_horizontal_velocity():
 
 
 func _on_tutorial_timer_timeout():
-	if !Saver.save_file_exists():
-		Dialogs.add_text_dialog(["You have successfully arrived at Sector Meteorite.", "Enemy activity detected. Take care.", "Use WASD to walk, and SPACE to jump."])
+	pass
+	#if !Saver.save_file_exists():
+		#Dialogs.add_text_dialog(["You have successfully arrived at Sector Meteorite.", "Enemy activity detected. Take care.", "Use WASD to walk, and SPACE to jump."])

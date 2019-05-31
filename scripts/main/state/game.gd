@@ -1,6 +1,7 @@
 extends "res://scripts/fsm/fsm_state.gd"
 
 var current_level = null # TODO why store both current_level and fsm_owner.current_level?
+var player
 
 func on_init():
 	
@@ -23,7 +24,7 @@ func on_init():
 	
 	# also, get rid of all pickups we already have
 	
-	var player = PlayerData.get_player()
+	player = PlayerData.get_player()
 	var pickups = get_tree().get_nodes_in_group("pickup")
 	for pickup in pickups:
 		if player.is_unlocked(pickup.upgrade_name):
@@ -32,7 +33,11 @@ func on_init():
 			
 	# then play some music (TODO play different music depending on if boss defeated)
 	Music.play("meteorite")
-		
+	if current_level.freezes_player == true:
+		current_level.connect("unfreeze_player", self, "_on_unfreeze_player")
+
+func _on_unfreeze_player():
+	player.unlock_movement()
 			
 func on_finalize():
 	current_level.queue_free()
